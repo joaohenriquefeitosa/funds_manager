@@ -1,0 +1,48 @@
+version: "3"
+services:
+  #application web (PHP+NGINX)
+  web:
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    networks:
+      - main_net
+    volumes:
+      - ./applications:/var/www
+      - ./docker/nginx/sites:/etc/nginx/sites-available
+    ports:
+      - "8082:8082" #http
+    depends_on:
+      - postgres
+      - redis
+  # application Postgres
+  postgres:
+    image: postgres:14.3-alpine
+    restart: always
+    networks:
+      - main_net
+    volumes:
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./pg_hba.conf:/etc/postgresql/pg_hba.conf
+    environment:
+      POSTGRES_PASSWORD: pgpass
+      POSTGRES_DB: pgdb
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+  # application Redis
+  redis:
+    image: redis:7-alpine
+    restart: always
+    networks:
+      - main_net
+    ports:
+      - "6379:6379"
+
+networks:
+  main_net:
+
+volumes:
+  POSTGRES_VOLUME_EXEMPLO:
+  MYSQL_VOLUME_EXEMPLO:
+    driver: local
