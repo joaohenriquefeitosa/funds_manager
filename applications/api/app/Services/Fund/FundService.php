@@ -2,6 +2,8 @@
 
 namespace App\Services\Fund;
 
+use App\Repositories\Fund\FundRepositoryInterface;
+
 class FundService implements FundServiceInterface
 {
     /**

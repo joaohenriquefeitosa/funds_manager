@@ -3,9 +3,8 @@
 namespace App\Repositories\Fund;
 
 use App\Models\Fund;
-use App\Services\Fund\FundServiceInterface;
 
-class FundRepository implements FundServiceInterface
+class FundRepository implements FundRepositoryInterface
 {
     /**
      * @var Fund
@@ -32,8 +31,10 @@ class FundRepository implements FundServiceInterface
     public function index(array $data): array
     {
         $funds = $this->fund::filter($data)
-            ->paginate($length);
+            ->paginate($data['length']);
+        
+        $fundData = $funds->toArray();
 
-        return $funds;
+        return $fundData;
     }   
 }

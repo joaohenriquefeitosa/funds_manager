@@ -4,7 +4,9 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Fund\IndexFormRequest;
+use App\Services\Fund\FundServiceInterface;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 
 class FundController extends Controller
@@ -40,6 +42,13 @@ class FundController extends Controller
     {
         $data = $request->validated();
 
-        return $this->fundService->index($data);
+        $data['length'] = 10;
+
+        $response = $this->fundService->index($data);        
+
+        return response()->json(
+            $response,
+            Response::HTTP_OK
+        );
     }
 }
