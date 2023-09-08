@@ -27,7 +27,7 @@ class Fund extends Model
 
     public function companies()
     {
-        return $this->belongsToMany(Company::class);
+        return $this->belongsToMany(Company::class, 'fund_company', 'fund_id', 'company_id');
     }
 
     /**

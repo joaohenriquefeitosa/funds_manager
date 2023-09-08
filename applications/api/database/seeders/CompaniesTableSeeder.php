@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Company;
+use App\Models\Fund;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
@@ -17,9 +18,13 @@ class CompaniesTableSeeder extends Seeder
         $faker = Faker::create();
 
         foreach (range(1, 30) as $index) {
-            Company::create([
+            $company = Company::create([
                 'name' => $faker->company,
             ]);
+
+            $numberOfFunds = rand(1, 3);
+            $fundIds = Fund::inRandomOrder()->limit($numberOfFunds)->pluck('id');
+            $company->funds()->attach($fundIds);
         }
     }
 }

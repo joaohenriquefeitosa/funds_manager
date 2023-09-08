@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Repositories\Alias\AliasRepository;
+use App\Repositories\Alias\AliasRepositoryInterface;
+use App\Repositories\Company\CompanyRepository;
+use App\Repositories\Company\CompanyRepositoryInterface;
 use App\Repositories\Fund\FundRepository;
 use App\Repositories\Fund\FundRepositoryInterface;
 use App\Repositories\FundManager\FundManagerRepository;
@@ -23,6 +27,12 @@ class AppServiceProvider extends ServiceProvider
 
         // FundManager
         $this->app->bind(FundManagerRepositoryInterface::class, FundManagerRepository::class);
+
+        // Company
+        $this->app->bind(CompanyRepositoryInterface::class, CompanyRepository::class);
+
+        // FundManager
+        $this->app->bind(AliasRepositoryInterface::class, AliasRepository::class);
     }
 
     /**

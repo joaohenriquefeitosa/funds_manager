@@ -90,7 +90,6 @@ class FundController extends Controller
     public function store(CreateFormRequest $request): JsonResponse
     {
         $data = $request->validated();
-
         $response = $this->fundService->create($data);
 
         if(!$response){

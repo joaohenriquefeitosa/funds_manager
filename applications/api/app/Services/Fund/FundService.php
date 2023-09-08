@@ -3,6 +3,8 @@
 namespace App\Services\Fund;
 
 use App\Models\Fund;
+use App\Repositories\Alias\AliasRepositoryInterface;
+use App\Repositories\Company\CompanyRepositoryInterface;
 use App\Repositories\Fund\FundRepositoryInterface;
 use App\Repositories\FundManager\FundManagerRepositoryInterface;
 
@@ -19,17 +21,31 @@ class FundService implements FundServiceInterface
     private $fundManagerRepository;
 
     /**
+     * @var AliasRepositoryInterface
+     */
+    private $aliasRepository;
+
+    /**
+     * @var CompanyRepositoryInterface
+     */
+    private $companyRepository;
+
+    /**
      * FundService constructor.
      * 
      * @param FundRepositoryInterface $fundRepository
      */
     public function __construct(
         FundRepositoryInterface $fundRepository,
-        FundManagerRepositoryInterface $fundManagerRepository
+        FundManagerRepositoryInterface $fundManagerRepository,
+        AliasRepositoryInterface $aliasRepository,
+        CompanyRepositoryInterface $companyRepository
     )
     {
         $this->fundRepository           = $fundRepository;
         $this->fundManagerRepository    = $fundManagerRepository;
+        $this->aliasRepository          = $aliasRepository;
+        $this->companyRepository        = $companyRepository;
     }
 
     /**
@@ -87,10 +103,33 @@ class FundService implements FundServiceInterface
                 $fundManager = $this->fundManagerRepository->create($data['manager']);
             }
 
-            unset($data['manager']);
+            $aliases = $data['alias'] ?? [];
+            $companies = $data['companies'] ?? [];
+    
+            unset($data['manager'], $data['alias'], $data['companies']);
             $data['manager_id'] = $fundManager['id'];
             
-            return $this->fundRepository->create($data);
+            $fund = $this->fundRepository->create($data);
+
+            // Attach aliases to the fund
+            foreach($aliases as $name) {
+                $alias = $this->aliasRepository->getByName($name);
+                if(!$alias) {
+                    $alias = $this->aliasRepository->create(['alias' => $name, 'fund_id' => $fund->id]);
+                }
+            }
+
+            // Attach companies to the fund
+            foreach($companies as $name) {
+                $company = $this->companyRepository->getByName($name);
+                if(!$company) {
+                    $company = $this->companyRepository->create($name);
+                }
+                $fund->companies()->attach($company->id);
+            }
+            
+            $fund->load('manager', 'aliases', 'companies');
+            return $fund;
 
         } catch (\Throwable $th) {
             return null;

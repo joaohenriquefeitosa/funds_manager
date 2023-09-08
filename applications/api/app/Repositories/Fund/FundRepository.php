@@ -31,7 +31,7 @@ class FundRepository implements FundRepositoryInterface
      */
     public function index(array $data): array
     {
-        $funds = $this->fund::with(['manager', 'aliases'])
+        $funds = $this->fund::with(['manager', 'aliases', 'companies'])
             ->filter($data)
             ->paginate($data['length']);
         
@@ -49,7 +49,7 @@ class FundRepository implements FundRepositoryInterface
      */
     public function show(int $id): ?array
     {
-        $fund = $this->fund::with(['manager', 'aliases'])->find($id);
+        $fund = $this->fund::with(['manager', 'aliases', 'companies'])->find($id);
 
         if(!$fund) {
             return null;

@@ -25,6 +25,10 @@ class CreateFormRequest extends FormRequest
             'name'              => ['required', 'string', 'max:255'],
             'manager'           => ['required', 'string', 'max:255'],
             'start_year'        => ['required', 'integer', 'digits:4'],
+            'alias'             => ['nullable', 'array'],
+            'alias.*'           => ['string', 'max:255'],
+            'companies'         => ['nullable', 'array'],
+            'companies.*'       => ['string', 'max:255'],
         ];
     }
 }
