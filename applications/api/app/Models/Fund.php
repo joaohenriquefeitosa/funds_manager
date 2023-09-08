@@ -44,9 +44,9 @@ class Fund extends Model
             $query->where('name', 'like', '%' . $data['name'] . '%');
         }
 
-        if (isset($data['fund_manager'])) {
+        if (isset($data['manager'])) {
             $query->whereHas('manager', function ($subquery) use ($data) {
-                $subquery->where('name', 'like', '%' . $data['fund_manager'] . '%');
+                $subquery->where('name', 'like', '%' . $data['manager'] . '%');
             });
         }
 
