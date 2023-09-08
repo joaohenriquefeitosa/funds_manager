@@ -30,4 +30,30 @@ class Fund extends Model
         return $this->belongsToMany(Company::class);
     }
 
+    /**
+     * Scope a query to filter funds based on provided criteria.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param array $data
+     * 
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFilter($query, array $data)
+    {
+        if (isset($data['name'])) {
+            $query->where('name', 'like', '%' . $data['name'] . '%');
+        }
+
+        if (isset($data['fund_manager'])) {
+            $query->whereHas('manager', function ($subquery) use ($data) {
+                $subquery->where('name', 'like', '%' . $data['fund_manager'] . '%');
+            });
+        }
+
+        if (isset($data['year'])) {
+            $query->where('start_year', '=', $data['year']);
+        }
+
+        return $query;
+    }
 }
