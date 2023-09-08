@@ -87,6 +87,13 @@ class FundController extends Controller
         );
     }
 
+    /**
+     * Create the specified resource.
+     *
+     * @param CreateFormRequest $request
+     * 
+     * @return JsonResponse
+     */
     public function store(CreateFormRequest $request): JsonResponse
     {
         $data = $request->validated();
@@ -102,6 +109,32 @@ class FundController extends Controller
         return response()->json(
             $response,
             Response::HTTP_CREATED
+        );
+    }
+
+    /**
+     * Update the specified resource.
+     *
+     * @param Request $request
+     * @param int $id
+     * 
+     * @return JsonResponse
+     */
+    public function update(Request $request, int $id): JsonResponse
+    {
+        $data = $request->all();
+        $response = $this->fundService->update($data, $id);
+
+        if(!$response){
+            return response()->json(
+                ['error' => 'Error updating fund'],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+
+        return response()->json(
+            $response,
+            Response::HTTP_OK
         );
     }
 }

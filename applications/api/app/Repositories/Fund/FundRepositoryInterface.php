@@ -21,9 +21,9 @@ interface FundRepositoryInterface
      *
      * @param int $id
      * 
-     * @return  array|null
+     * @return  Fund|null
      */
-    public function show(int $id): ?array;
+    public function show(int $id): ?Fund;
 
     /**
      * Delete the specified resource.
@@ -42,4 +42,14 @@ interface FundRepositoryInterface
      * @return Fund
      */
     public function create(array $data): Fund;
+
+    /**
+     * Update the specified resource.
+     * 
+     * @param array $data
+     * @param int $id
+     * 
+     * @return ?Fund
+     */
+    public function update(array $data, int $id): ?Fund;
 }

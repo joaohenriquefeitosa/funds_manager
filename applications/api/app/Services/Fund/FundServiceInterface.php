@@ -25,6 +25,15 @@ interface FundServiceInterface
     public function show(int $id): ?array;
 
     /**
+     * Return the specified object.
+     *
+     * @param int $id
+     * 
+     * @return Fund|null
+     */
+    public function find(int $id): ?Fund;
+
+    /**
      * Delete the specified resource.
      *
      * @param int $id

@@ -45,9 +45,9 @@ class FundRepository implements FundRepositoryInterface
      *
      * @param int $id
      * 
-     * @return  array|null
+     * @return  Fund|null
      */
-    public function show(int $id): ?array
+    public function show(int $id): ?Fund
     {
         $fund = $this->fund::with(['manager', 'aliases', 'companies'])->find($id);
 
@@ -55,9 +55,7 @@ class FundRepository implements FundRepositoryInterface
             return null;
         }
 
-        $fundData = $fund->toArray();
-
-        return $fundData;
+        return $fund;
     }
 
     /**
@@ -90,6 +88,26 @@ class FundRepository implements FundRepositoryInterface
             return $fund;
         } catch (\Exception $e) {
             return false;
+        }
+    }
+
+    /**
+     * Update the specified resource.
+     * 
+     * @param array $data
+     * @param int $id
+     * 
+     * @return ?Fund
+     */
+    public function update(array $data, int $id): ?Fund
+    {
+        try {
+            $fund = $this->fund::findOrFail($id);
+            $fund->update($data);
+
+            return $fund;
+        } catch (\Exception $e) {
+            return null;
         }
     }
 }
