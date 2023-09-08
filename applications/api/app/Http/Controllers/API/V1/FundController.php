@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Fund\CreateFormRequest;
 use App\Http\Requests\Fund\IndexFormRequest;
 use App\Services\Fund\FundServiceInterface;
 use Illuminate\Http\Request;
@@ -49,6 +50,59 @@ class FundController extends Controller
         return response()->json(
             $response,
             Response::HTTP_OK
+        );
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     * 
+     * @return JsonResponse
+     */
+    public function show(int $id): JsonResponse
+    {
+        $response = $this->fundService->show($id);
+
+        return response()->json(
+            $response,
+            Response::HTTP_OK
+        );
+    }
+
+    /**
+     * Delete the specified resource.
+     *
+     * @param int $id
+     * 
+     * @return JsonResponse
+     */
+    public function destroy(int $id): JsonResponse
+    {
+        $this->fundService->delete($id);
+
+        return response()->json(
+            null,
+            Response::HTTP_NO_CONTENT
+        );
+    }
+
+    public function store(CreateFormRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+
+        $response = $this->fundService->create($data);
+
+        if(!$response){
+            return response()->json(
+                ['error' => 'Error creating fund'],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+
+        return response()->json(
+            $response,
+            Response::HTTP_CREATED
         );
     }
 }

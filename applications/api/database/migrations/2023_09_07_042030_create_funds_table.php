@@ -18,7 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('manager_id');
             $table->timestamps();
 
-            $table->foreign('manager_id')->references('id')->on('fund_managers');
+            $table->foreign('manager_id')
+                ->references('id')->on('fund_managers');
         });
     }
 

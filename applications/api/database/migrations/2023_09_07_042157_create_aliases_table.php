@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('alias');
             $table->timestamps();
 
-            $table->foreign('fund_id')->references('id')->on('funds');
+            $table->foreign('fund_id')->references('id')->on('funds')->onDelete('cascade');
         });
     }
 

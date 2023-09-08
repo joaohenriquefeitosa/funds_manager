@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Repositories\Fund\FundRepository;
 use App\Repositories\Fund\FundRepositoryInterface;
+use App\Repositories\FundManager\FundManagerRepository;
+use App\Repositories\FundManager\FundManagerRepositoryInterface;
 use App\Services\Fund\FundService;
 use App\Services\Fund\FundServiceInterface;
 use Illuminate\Support\ServiceProvider;
@@ -18,6 +20,9 @@ class AppServiceProvider extends ServiceProvider
         // Fund
         $this->app->bind(FundServiceInterface::class, FundService::class);
         $this->app->bind(FundRepositoryInterface::class, FundRepository::class);
+
+        // FundManager
+        $this->app->bind(FundManagerRepositoryInterface::class, FundManagerRepository::class);
     }
 
     /**
