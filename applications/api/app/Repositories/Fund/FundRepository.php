@@ -30,7 +30,8 @@ class FundRepository implements FundRepositoryInterface
      */
     public function index(array $data): array
     {
-        $funds = $this->fund::filter($data)
+        $funds = $this->fund::with(['manager', 'aliases'])
+            ->filter($data)
             ->paginate($data['length']);
         
         $fundData = $funds->toArray();
