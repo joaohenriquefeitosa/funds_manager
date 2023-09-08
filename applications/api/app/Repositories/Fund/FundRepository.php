@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Fund;
 
+use App\Events\DuplicateFundWarning;
 use App\Models\Fund;
 use App\Models\FundManager;
 
@@ -82,6 +83,10 @@ class FundRepository implements FundRepositoryInterface
     public function create(array $data): Fund
     {
         try {
+            if ($this->isDuplicateFund($data)) {
+                event(new DuplicateFundWarning($fund));
+            }
+
             $fund = $this->fund::create($data);
             $fund->save();
 
@@ -109,5 +114,28 @@ class FundRepository implements FundRepositoryInterface
         } catch (\Exception $e) {
             return null;
         }
+    }
+
+    /**
+     * Check if a duplicate fund condition is met.
+     * 
+     * @param array $data
+     * 
+     * @return bool
+     */
+    public function isDuplicateFund(array $data): bool
+    {
+        $name = $data['name'] ?? null;
+        $managerId = $data['manager_id'] ?? null;
+
+        if (!$name || !$managerId) {
+            return false;
+        }
+
+        $existingFund = $this->fund::where('name', $name)
+            ->where('manager_id', $managerId)
+            ->first();
+
+        return $existingFund !== null;
     }
 }

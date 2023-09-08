@@ -52,4 +52,13 @@ interface FundRepositoryInterface
      * @return ?Fund
      */
     public function update(array $data, int $id): ?Fund;
+
+    /**
+     * Check if a duplicate fund condition is met.
+     * 
+     * @param array $data
+     * 
+     * @return bool
+     */
+    public function isDuplicateFund(array $data): bool;
 }
