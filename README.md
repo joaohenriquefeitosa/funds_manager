@@ -10,7 +10,7 @@ Inside this folder just run:
 
 > docker-compose up
 
-## COMPOSE
+## COMPOSER
 ```
 You'll need to run composer install to install all dependencies for the Laravel project.
 ```
