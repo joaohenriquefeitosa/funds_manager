@@ -10,6 +10,13 @@ Inside this folder just run:
 
 > docker-compose up
 
+## COMPOSE
+```
+You'll need to run composer install to install all dependencies for the Laravel project.
+```
+>docker exec -it funds_manager-web-1 sh -c "cd api && composer install"
+
+
 ## APPLICATION
 ```
 All files related the application will be available in applications/api.
